@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Wars Quiz Box</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Baloo 2', sans-serif;
+            background-color: #101820FF; /* Dark space background */
+            color: white;
+            flex-direction: column;
+            margin: 0;
+            position: relative;
+        }
+
+        #quiz-headings {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        #yellow-box {
+            width: 200px;
+            height: 200px;
+            background-color: #fed405;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            color: black;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            border: 5px solid black;
+            text-transform: uppercase;
+        }
+
+        .color-boxes {
+            display: flex;
+            justify-content: space-between;
+            width: 220px;
+        }
+
+        .color-box {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        #green-box {
+            background-color: #7fd15a;
+        }
+
+        #orange-box {
+            background-color: #ff914d;
+        }
+
+        #red-box {
+            background-color: #ee1d23;
+        }
+
+        #purple-box {
+            background-color: #8456e5;
+        }
+
+        #question-answer {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        #tagline {
+            margin-top: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        #go-back-button {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="quiz-headings"></div>
+    <div id="yellow-box">STAR WARS</div>
+    <div class="color-boxes">
+        <div id="green-box" class="color-box"></div>
+        <div id="orange-box" class="color-box"></div>
+        <div id="red-box" class="color-box"></div>
+        <div id="purple-box" class="color-box"></div>
+    </div>
+    <div id="question-answer"></div>
+    <div id="tagline">QuizHeads. The forever changing trivia board game!</div>
+    <a id="go-back-button" href="https://quizheads.co.uk/masterquizzes">GO BACK</a>
+
+    <script>
+        const yellowBox = document.getElementById("yellow-box");
+        const greenBox = document.getElementById("green-box");
+        const orangeBox = document.getElementById("orange-box");
+        const redBox = document.getElementById("red-box");
+        const purpleBox = document.getElementById("purple-box");
+        const questionAnswerDiv = document.getElementById("question-answer");
+
+        // Array of Star Wars trivia questions and answers
+        const starWarsQuestions = [
+            { question: "Who is Luke Skywalker's father?", answer: "Darth Vader" },
+            { question: "In which movie does Yoda first appear?", answer: "The Empire Strikes Back" },
+            { question: "What planet is Princess Leia from?", answer: "Alderaan" },
+            { question: "Who built C-3PO?", answer: "Anakin Skywalker" },
+            { question: "What color is Mace Windu's lightsaber?", answer: "Purple" },
+            { question: "What is the name of Han Solo's ship?", answer: "The Millennium Falcon" },
+            { question: "What species is Chewbacca?", answer: "Wookiee" },
+            { question: "Who killed Han Solo?", answer: "Kylo Ren" },
+            { question: "What are the small creatures that help the Rebels on Endor?", answer: "Ewoks" },
+            { question: "What is the name of Boba Fett's ship?", answer: "Slave I" },
+            { question: "Which actor played the role of Obi-Wan Kenobi in the prequel trilogy?", answer: "Ewan McGregor" },
+            { question: "Who is the leader of the First Order?", answer: "Supreme Leader Snoke" },
+            { question: "What is the name of Luke Skywalker's home planet?", answer: "Tatooine" },
+            { question: "Who directed 'A New Hope'?", answer: "George Lucas" },
+            { question: "What is Kylo Ren's real name?", answer: "Ben Solo" },
+            { question: "What is the name of the ice planet in 'The Empire Strikes Back'?", answer: "Hoth" },
+            { question: "Who plays Princess Leia?", answer: "Carrie Fisher" },
+            { question: "What is the name of the Sith homeworld?", answer: "Korriban" },
+            { question: "Which character said, 'I am your father'?", answer: "Darth Vader" },
+            { question: "Who was the clone template for the clone army?", answer: "Jango Fett" },
+            { question: "What is the name of the Death Star's superweapon?", answer: "Superlaser" },
+            { question: "What is the name of the planet destroyed by the Death Star?", answer: "Alderaan" },
+            { question: "Which character famously declares, 'Do or do not, there is no try'?", answer: "Yoda" },
+            { question: "Who is the mother of Luke and Leia?", answer: "Padmé Amidala" },
+            { question: "What is the title of Episode VI?", answer: "Return of the Jedi" },
+            { question: "Who is the Supreme Chancellor of the Galactic Republic before becoming Emperor?", answer: "Palpatine" },
+            { question: "What was Finn's stormtrooper designation?", answer: "FN-2187" },
+            { question: "Who was the original owner of the Millennium Falcon?", answer: "Lando Calrissian" },
+            { question: "Who was the last Jedi to train Luke Skywalker?", answer: "Yoda" },
+            { question: "What planet is the home of the Wookiees?", answer: "Kashyyyk" },
+            { question: "What was the original name of the first Star Wars movie?", answer: "The Star Wars" },
+            { question: "Who composed the iconic Star Wars theme music?", answer: "John Williams" },
+            { question: "Who was the only non-Jedi to use a lightsaber in the original trilogy?", answer: "Han Solo" },
+            { question: "What is the name of the bounty hunter who captures Han Solo in 'The Empire Strikes Back'?", answer: "Boba Fett" },
+            { question: "What creature lives in the garbage compactor of the Death Star?", answer: "Dianoga" },
+            { question: "What actor played Lando Calrissian?", answer: "Billy Dee Williams" },
+            { question: "Who was Anakin Skywalker's Jedi master?", answer: "Obi-Wan Kenobi" },
+            { question: "What type of droid is R2-D2?", answer: "Astromech droid" },
+            { question: "What is the name of the planet where the clones were created?", answer: "Kamino" },
+            { question: "Who kills Emperor Palpatine in Episode VI?", answer: "Darth Vader" },
+            { question: "What is the name of Anakin Skywalker's mother?", answer: "Shmi Skywalker" },
+            { question: "Which Jedi was known for their purple lightsaber?", answer: "Mace Windu" },
+            { question: "What is the name of the large slug-like creature who captures Han Solo?", answer: "Jabba the Hutt" },
+            { question: "What is the Sith rule of only two at a time called?", answer: "Rule of Two" },
+            { question: "Who did Luke Skywalker live with on Tatooine?", answer: "Owen and Beru Lars" },
+            { question: "What type of crystal powers lightsabers?", answer: "Kyber crystal" },
+            { question: "Who said, 'I have a bad feeling about this'?", answer: "Various characters" },
+            { question: "What ship did Rey salvage from Jakku?", answer: "The Millennium Falcon" },
+            { question: "What is the species of Yoda?", answer: "Unknown" },
+            { question: "What is the desert planet where Anakin grew up?", answer: "Tatooine" },
+            { question: "Who killed Qui-Gon Jinn?", answer: "Darth Maul" },
+            { question: "What is the name of the organization that became the Empire?", answer: "The Galactic Republic" },
+            { question: "What droid does Luke Skywalker buy from the Jawas in 'A New Hope'?", answer: "R2-D2" },
+            { question: "What is the name of the gambling planet in 'The Last Jedi'?", answer: "Canto Bight" },
+            { question: "Who was Luke Skywalker's first mentor?", answer: "Obi-Wan Kenobi" },
+            { question: "Who said, 'I am one with the Force, and the Force is with me'?", answer: "Chirrut Îmwe" },
+            { question: "Who was trained by Luke Skywalker after the events of Episode VI?", answer: "Rey" }
+            // Add more questions up to 100 as needed...
+        ];
+
+        let shuffledQuestions = [];
+        let questionIndex = 0;
+
+        // Shuffle the questions array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        // Initialize questions
+        function initializeQuestions() {
+            shuffledQuestions = shuffleArray([...starWarsQuestions]);
+            questionIndex = 0;
+            displayQuestion();
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            if (shuffledQuestions.length === 0) {
+                questionAnswerDiv.innerHTML = "<strong>No more questions!</strong>";
+                return;
+            }
+            const currentQA = shuffledQuestions[questionIndex];
+            questionAnswerDiv.innerHTML = `<strong>Question:</strong> ${currentQA.question}<br><strong>Answer:</strong> ${currentQA.answer}`;
+        }
+
+        // Change color of the yellow box when a color box is clicked
+        greenBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#7FD15A";
+        });
+
+        orangeBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#FF914D";
+        });
+
+        redBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#EE1D23";
+        });
+
+        purpleBox.addEventListener("click", () => {
+            yellowBox.style.backgroundColor = "#8456E5";
+        });
+
+        // Generate a random question and display it when the yellow box is clicked
+        yellowBox.addEventListener("click", () => {
+            questionIndex = (questionIndex + 1) % shuffledQuestions.length;
+            displayQuestion();
+        });
+
+        // Initialize questions on page load
+        window.onload = initializeQuestions;
+    </script>
+
+</body>
+</html>
